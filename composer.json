@@ -1,0 +1,13 @@
+{
+    "name": "scaleplan/monit",
+    "description": "Monit file creator by PHP",
+    "autoload": {
+        "psr-4": {
+            "Scaleplan\\Monit\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=7.0",
+        "symfony/yaml": "~3.0"
+    }
+}
