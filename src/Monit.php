@@ -3,6 +3,7 @@
 namespace Scaleplan\Monit;
 
 use Scaleplan\Daemon\Daemon;
+use function Scaleplan\Helpers\getenv;
 
 /**
  * Class Monit
@@ -44,9 +45,6 @@ class Monit
      * Monit constructor.
      *
      * @param string $serviceName
-     * @param string $config
-     *
-     * @throws \ReflectionException
      */
     public function __construct(string $serviceName)
     {
