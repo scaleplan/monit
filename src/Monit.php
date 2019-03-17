@@ -3,7 +3,7 @@
 namespace Scaleplan\Monit;
 
 use Scaleplan\Daemon\Daemon;
-use function Scaleplan\Helpers\getenv;
+use function Scaleplan\Helpers\get_env;
 
 /**
  * Class Monit
@@ -50,14 +50,15 @@ class Monit
     {
         $this->serviceName = $serviceName;
         $this->processName = $serviceName;
-        $this->filePath = getenv('MONIT_FILES_PATH') ?? static::MONIT_FILES_PATH . "/$serviceName";
+        $this->filePath = get_env('MONIT_FILES_PATH') ?? static::MONIT_FILES_PATH . "/$serviceName";
+        $starterPath = get_env('DAEMON_STARTER_PATH') ?? static::DAEMON_STARTER_PATH;
         $this->stopDaemonCommand =
-            getenv('DAEMON_STARTER_PATH') ?? static::DAEMON_STARTER_PATH
+            $starterPath
             . ' '
             . Daemon::OPERATION_STOP
             . " $serviceName";
-        $this->stopDaemonCommand =
-            getenv('DAEMON_STARTER_PATH') ?? static::DAEMON_STARTER_PATH
+        $this->startDaemonCommand =
+            $starterPath
             . ' '
             . Daemon::OPERATION_START
             . " $serviceName";
