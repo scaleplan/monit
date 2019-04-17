@@ -14,7 +14,7 @@ class Monit
 {
     public const MONIT_FILES_PATH = './files';
 
-    public const DAEMON_STARTER_PATH = '/var/www/vendor/bin/daemon';
+    public const DAEMON_RUNNER_PATH = '/var/www/vendor/bin/daemon';
 
     /**
      * @var string
@@ -51,7 +51,7 @@ class Monit
         $this->serviceName = $serviceName;
         $this->processName = $serviceName;
         $this->filePath = get_env('MONIT_FILES_PATH') ?? static::MONIT_FILES_PATH . "/$serviceName";
-        $starterPath = get_env('DAEMON_STARTER_PATH') ?? static::DAEMON_STARTER_PATH;
+        $starterPath = get_env('DAEMON_STARTER_PATH') ?? static::DAEMON_RUNNER_PATH;
         $this->stopDaemonCommand =
             $starterPath
             . ' '
