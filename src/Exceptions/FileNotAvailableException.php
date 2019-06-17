@@ -12,4 +12,5 @@ use Scaleplan\Monit\Exceptions\MonitException;
 class FileNotAvailableException extends MonitException
 {
     public const MESSAGE = 'Monit control file not available';
+    public const CODE = 404;
 }
