@@ -4,6 +4,7 @@ namespace Scaleplan\Monit;
 
 use Scaleplan\Daemon\Daemon;
 use function Scaleplan\Helpers\get_env;
+use function Scaleplan\Helpers\get_required_env;
 
 /**
  * Class Monit
@@ -12,9 +13,9 @@ use function Scaleplan\Helpers\get_env;
  */
 class Monit
 {
-    public const MONIT_FILES_PATH = './files';
+    public const MONIT_FILES_PATH = '/monit';
 
-    public const DAEMON_RUNNER_PATH = '/var/www/vendor/bin/daemon';
+    public const DAEMON_RUNNER_PATH = '/var/www/vendor/bin/daemonize';
 
     /**
      * @var string
@@ -42,15 +43,25 @@ class Monit
     protected $startDaemonCommand;
 
     /**
+     * @var int
+     */
+    protected $alertCyclesCount = 5;
+
+    /**
      * Monit constructor.
      *
      * @param string $serviceName
+     *
+     * @throws \Scaleplan\Helpers\Exceptions\EnvNotFoundException
      */
     public function __construct(string $serviceName)
     {
         $this->serviceName = $serviceName;
         $this->processName = $serviceName;
-        $this->filePath = get_env('MONIT_FILES_PATH') ?? static::MONIT_FILES_PATH . "/$serviceName";
+        $this->alertCyclesCount = get_env('MONIT_ALERT_CYCLES_COUNT') ?? $this->alertCyclesCount;
+        $this->filePath = get_required_env('BUNDLE_PATH')
+            . (get_env('MONIT_FILES_PATH') ?? static::MONIT_FILES_PATH)
+            . "/$serviceName";
         $starterPath = get_env('DAEMON_STARTER_PATH') ?? static::DAEMON_RUNNER_PATH;
         $this->stopDaemonCommand =
             $starterPath
@@ -153,7 +164,8 @@ class Monit
             "check process {$this->processName}\n" .
             "matching \"{$this->processName}\"\n" .
             "start program = \"{$this->startDaemonCommand}\"\n" .
-            "stop program = \"{$this->stopDaemonCommand}\"";
+            "stop program = \"{$this->stopDaemonCommand}\"" .
+            "if {$this->alertCyclesCount} restarts within {$this->alertCyclesCount} cycles then alert";
     }
 
     /**
