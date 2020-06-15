@@ -9,7 +9,7 @@ namespace Scaleplan\Monit\Exceptions;
  */
 class MonitException extends \Exception
 {
-    public const MESSAGE = 'Monit error.';
+    public const MESSAGE = 'Ошибка monit.';
     public const CODE = 500;
 
     /**
